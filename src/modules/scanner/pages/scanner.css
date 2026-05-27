@@ -1,0 +1,250 @@
+/* ==========================================================================
+   Scanner Module CSS - rastre.io
+   ========================================================================== */
+
+.scanner-page {
+  animation: fadeIn var(--transition-base) ease;
+}
+
+.scanner-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ---- Scanner Visual ---- */
+.scanner-visual {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.scanner-frame {
+  width: 220px;
+  height: 220px;
+  margin: 0 auto var(--space-4);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-elevated);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.scanner-corners {
+  position: absolute;
+  inset: 12px;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-md);
+}
+
+/* Animação da linha de escaneamento */
+.scanner-line {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary), 0 0 20px rgba(124, 58, 237, 0.3);
+  animation: scanLine 2.5s ease-in-out infinite;
+}
+
+@keyframes scanLine {
+  0%, 100% { top: 20px; }
+  50% { top: calc(100% - 20px); }
+}
+
+.scanner-camera-icon {
+  color: var(--text-muted);
+  opacity: 0.4;
+  z-index: 1;
+}
+
+.scanner-visual-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+/* ---- Scanner Form ---- */
+.scanner-form {
+  margin-bottom: var(--space-4);
+}
+
+.scanner-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.scanner-input-icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.scanner-code-input {
+  flex: 1;
+  font-family: monospace;
+  font-size: var(--font-size-lg) !important;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.scanner-error {
+  margin-top: var(--space-3);
+  color: var(--danger);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+/* ---- Test Codes ---- */
+.scanner-test-codes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.scanner-test-codes span {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+.scanner-test-code {
+  font-size: var(--font-size-xs);
+  font-family: monospace;
+  color: var(--primary-light);
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.scanner-test-code:hover {
+  background: rgba(124, 58, 237, 0.15);
+}
+
+/* ---- Scanner Result ---- */
+.scanner-result {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+}
+
+.scanner-result-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.scanner-qr {
+  flex-shrink: 0;
+  padding: var(--space-3);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+}
+
+.scanner-result-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.scanner-result-code {
+  font-family: monospace;
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.scanner-result-desc {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.scanner-result-details {
+  margin-bottom: var(--space-6);
+}
+.scanner-detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--surface-border);
+}
+.scanner-detail-row:last-child {
+  border-bottom: none;
+}
+.scanner-detail-row span:first-child {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.scanner-detail-row span:last-child {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  text-align: right;
+}
+
+/* ---- Update Form ---- */
+.scanner-update-form {
+  border-top: 1px solid var(--surface-border);
+  padding-top: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.scanner-update-form h3 {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--primary-light);
+}
+.scanner-update-actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+/* ---- Success State ---- */
+.scanner-success {
+  text-align: center;
+  padding: var(--space-12) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--success);
+}
+.scanner-success h3 {
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
+}
+.scanner-success p {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.scanner-completed {
+  text-align: center;
+  padding: var(--space-6);
+  border-top: 1px solid var(--surface-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+.scanner-completed p {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 640px) {
+  .scanner-result-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  .scanner-input-wrapper {
+    flex-direction: column;
+  }
+  .scanner-input-wrapper .btn {
+    width: 100%;
+  }
+}

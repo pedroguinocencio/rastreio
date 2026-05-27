@@ -1,0 +1,217 @@
+/* ==========================================================================
+   Deliveries Module CSS - rastre.io
+   ========================================================================== */
+
+.deliveries-page {
+  animation: fadeIn var(--transition-base) ease;
+}
+
+/* ---- Filtros ---- */
+.deliveries-filters {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.deliveries-search {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+.deliveries-search-icon {
+  position: absolute;
+  left: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.deliveries-search .input-field {
+  padding-left: var(--space-10);
+}
+
+.deliveries-status-filter {
+  min-width: 180px;
+}
+
+/* ---- Table cells ---- */
+.delivery-code-cell {
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--primary-light);
+  font-size: var(--font-size-sm);
+}
+
+.delivery-recipient-cell {
+  display: flex;
+  flex-direction: column;
+}
+.delivery-recipient-name {
+  font-weight: 500;
+}
+.delivery-recipient-desc {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+.delivery-driver-cell {
+  color: var(--text-secondary);
+}
+
+.delivery-updated-cell {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ==================== DELIVERY DETAIL ==================== */
+.delivery-detail-page {
+  animation: fadeIn var(--transition-base) ease;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+  flex-wrap: wrap;
+}
+.detail-header-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.detail-header-info .page-title {
+  font-family: monospace;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.detail-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.detail-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--surface-border);
+}
+.detail-info-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.detail-info-row span:first-child {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.detail-info-row span:last-child {
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  text-align: right;
+  font-weight: 500;
+}
+
+/* ---- Dark Timeline (Dashboard) ---- */
+.detail-timeline {
+  position: relative;
+}
+
+.timeline-item-dark {
+  display: flex;
+  gap: var(--space-4);
+  position: relative;
+  padding-bottom: var(--space-6);
+}
+.timeline-item-dark:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item-current-dark .timeline-dot {
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
+}
+
+.timeline-line-dark {
+  position: absolute;
+  left: 15px;
+  top: 36px;
+  bottom: 0;
+  width: 2px;
+  background: var(--surface-border);
+}
+
+.timeline-content-dark {
+  flex: 1;
+  padding-top: 2px;
+}
+
+.timeline-header-dark {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.timeline-date-dark {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.timeline-desc-dark {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.timeline-meta-dark {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+.timeline-meta-dark span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .deliveries-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .deliveries-search {
+    min-width: unset;
+  }
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

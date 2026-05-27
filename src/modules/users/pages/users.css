@@ -1,0 +1,186 @@
+/* ==========================================================================
+   Users Module CSS - rastre.io
+   ========================================================================== */
+
+.users-page {
+  animation: fadeIn var(--transition-base) ease;
+}
+
+.users-filters {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+}
+
+/* ---- User Cards ---- */
+.users-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.user-card {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all var(--transition-base);
+}
+.user-card:hover {
+  border-color: var(--surface-hover);
+}
+.user-card-inactive {
+  opacity: 0.6;
+}
+
+.user-card-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+}
+
+.user-card-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+
+.user-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.user-card-name-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.user-card-name {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.user-card-email {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+
+.user-card-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-1);
+}
+
+.user-card-phone, .user-card-truck {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.user-card-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* ---- Permissions Panel ---- */
+.user-permissions {
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--surface-border);
+  background: var(--surface-elevated);
+}
+.user-permissions h4 {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--primary-light);
+  margin-bottom: var(--space-1);
+}
+.user-permissions-desc {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.permissions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-2);
+}
+.permissions-grid-sm {
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-xs);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+}
+.permission-item.granted {
+  color: var(--success);
+  background: var(--success-bg);
+}
+.permission-item.denied {
+  color: var(--text-muted);
+  background: rgba(148, 163, 184, 0.05);
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* ---- User Form ---- */
+.user-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.user-form-permissions {
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+.user-form-permissions h4 {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-3);
+  font-weight: 600;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+  .user-card-main {
+    flex-wrap: wrap;
+  }
+  .user-card-actions {
+    width: 100%;
+    justify-content: flex-end;
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--surface-border);
+  }
+  .permissions-grid {
+    grid-template-columns: 1fr;
+  }
+}
