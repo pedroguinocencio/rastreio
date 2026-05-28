@@ -6,14 +6,14 @@
 
 ## 📋 Sobre o Projeto
 
-O **rastre.io** é um sistema de rastreamento logístico desenvolvido para a **Locatrans**, substituindo o acompanhamento manual por WhatsApp por uma plataforma web organizada, acessível e funcional.
+O **rastre.io** é um sistema de rastreamento logístico desenvolvido para a **Locatrans**, substituindo o acompanhamento manual por WhatsApp por uma plataforma web organizada, acessível e funcional. O sistema está integrado ao **Firebase (Auth e Firestore)** para persistência de dados.
 
 ### O que o sistema faz:
 - ✅ **Rastreamento público** — Clientes consultam encomendas sem login
 - ✅ **Dashboard interno** — Funcionários monitoram entregas e frota
 - ✅ **Scanner QR** — Motoristas atualizam status em campo
-- ✅ **Mapa da frota** — Localização em tempo real dos caminhões
-- ✅ **Gerenciamento de usuários** — Admin controla acessos e permissões
+- ✅ **Mapa da frota** — Localização em tempo real dos caminhões (Firestore)
+- ✅ **Gerenciamento de usuários** — Admin controla acessos e permissões (Firebase Auth + Firestore)
 
 ---
 
@@ -22,6 +22,21 @@ O **rastre.io** é um sistema de rastreamento logístico desenvolvido para a **L
 ### Pré-requisitos
 - Node.js 18+ 
 - npm 9+
+- Projeto no Firebase configurado
+
+### Configuração do Ambiente (.env)
+
+Crie um arquivo `.env` na raiz do projeto com as credenciais do seu Firebase:
+
+```env
+VITE_FIREBASE_API_KEY=seu_api_key
+VITE_FIREBASE_AUTH_DOMAIN=seu_auth_domain
+VITE_FIREBASE_PROJECT_ID=seu_project_id
+VITE_FIREBASE_STORAGE_BUCKET=seu_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=seu_messaging_sender_id
+VITE_FIREBASE_APP_ID=seu_app_id
+VITE_FIREBASE_MEASUREMENT_ID=seu_measurement_id
+```
 
 ### Instalação
 
@@ -32,66 +47,50 @@ cd Rastreio
 # Instale as dependências
 npm install
 
-# Configure o Firebase
-cp .env.example .env
+# Inicialize os dados (Seeding)
+# O app irá semear o banco automaticamente na primeira execução do Dashboard,
+# ou você pode rodar o script manual:
+npm run seed
+```
 
-# Inicie o servidor de desenvolvimento
+### Desenvolvimento
+
+```bash
 npm run dev
 ```
 
-O app estará disponível em `http://localhost:5173`
-
-### Configuração do Firebase
-
-Preencha o `.env` com as credenciais do app Web do Firebase. No Firebase Console, habilite **Authentication → Sign-in method → Email/Password** e crie usuários com os emails usados no sistema.
-
-O login usa somente o Firebase Authentication. Não é necessário criar coleção/tabela `users` no Firestore para autenticar.
-
-Permissões internas usam o papel do usuário. Se você configurar custom claim `role` no Firebase Auth, o app usa esse valor. Sem custom claim, ele usa o papel padrão do `.env`:
-
-```bash
-VITE_FIREBASE_DEFAULT_ROLE=employee
-```
-
-Valores aceitos: `admin`, `employee`, `driver`.
-
 ---
 
-## 🔑 Contas de Teste
-
-| Perfil | Email | Senha |
-|--------|-------|-------|
-| **Administrador** | carlos@locatrans.com | admin123 |
-| **Funcionário** | maria@locatrans.com | func123 |
-| **Motorista** | jose@locatrans.com | motor123 |
-
-### Códigos de Rastreio para Teste
-- `LCT2025A001` — Entregue ✅
-- `LCT2025B042` — Em Trânsito 🚛
-- `LCT2025C107` — Saiu para Entrega 📦
-- `LCT2025D055` — Coletado 📋
-- `LCT2025E200` — Pendente ⏳
-- `LCT2025F018` — Devolvido ↩️
-
----
-
-## 🏗️ Arquitetura
+## 🛠️ Arquitetura e Estrutura
 
 ### Stack Tecnológica
 | Tecnologia | Uso |
 |------------|-----|
 | **React + Vite** | SPA com HMR rápido |
 | **React Router v6** | Roteamento SPA |
+| **Firebase Auth** | Autenticação de usuários |
+| **Cloud Firestore** | Banco de dados NoSQL |
 | **CSS vanilla** | Design system customizado |
-| **Leaflet + OpenStreetMap** | Mapas (gratuito) |
-| **Lucide React** | Ícones |
+| **Leaflet + OpenStreetMap** | Mapas e geolocalização |
+| **Lucide React** | Biblioteca de ícones |
 | **qrcode.react** | Geração de QR codes |
 | **Context API** | Estado global de autenticação |
 
-### Fluxo de Dados
+### Fluxo de Dados (Padrão Repository)
+O projeto utiliza uma arquitetura em camadas para isolar o Firestore e manter os services focados na lógica de negócio:
+
 ```
-Route → Page (Controller) → Service (Regras de Negócio) → Repository (Mock Data)
+Route → Page (Controller) → Service (Negócio) → Repository (Acesso a dados Firestore)
 ```
+
+- **Repositories** (`src/shared/repositories/`): Contêm todo o acesso direto ao SDK do Firestore (queries, updates, batchs).
+- **Services** (`src/modules/.../services/`): Contêm a lógica de processamento, regras de negócio e formatação de dados.
+
+### Coleções do Firestore
+* **`users`**: Perfis dos usuários com permissões/funções (admin, employee, driver).
+* **`deliveries`**: Encomendas cadastradas.
+* **`statusHistory`**: Registro histórico de cada alteração de status de cada entrega.
+* **`locations`**: Placas de caminhões e coordenadas de latitude/longitude para exibição no mapa.
 
 ### Estrutura de Pastas
 ```
@@ -102,51 +101,24 @@ src/
 │   └── App.jsx             # Root component
 │
 ├── modules/                # Módulos de domínio
-│   ├── auth/               # Autenticação
+│   ├── auth/               # Autenticação (Contexto e Login)
 │   ├── tracking/           # Rastreamento público
 │   ├── deliveries/         # Gerenciamento de entregas
-│   ├── dashboard/          # Dashboard
+│   ├── dashboard/          # Dashboard e estatísticas
 │   ├── locations/          # Mapa da frota
 │   ├── scanner/            # Scanner QR
 │   └── users/              # Gerenciamento de usuários
 │
 ├── shared/                 # Código compartilhado
 │   ├── components/         # Componentes reutilizáveis
-│   ├── data/               # Dados mock centralizados
 │   ├── hooks/              # Hooks customizados
-│   ├── utils/              # Utilitários e constantes
+│   ├── repositories/       # Camada de Repositórios Firestore
+│   ├── utils/              # Firebase Config, utilitários e constantes
 │   └── styles/             # Design system CSS
 │
 ├── assets/                 # Imagens e recursos
 └── main.jsx                # Entry point
 ```
-
-### Perfis de Acesso
-
-| Funcionalidade | Admin | Funcionário | Motorista |
-|----------------|:-----:|:-----------:|:---------:|
-| Dashboard | ✅ | ✅ | ✅ |
-| Ver entregas | ✅ | ✅ | ✅ |
-| Criar entregas | ✅ | ✅ | ❌ |
-| Atualizar status | ✅ | ✅ | ✅ |
-| Mapa da frota | ✅ | ✅ | ❌ |
-| Scanner QR | ✅ | ❌ | ✅ |
-| Gerenciar usuários | ✅ | ❌ | ❌ |
-
----
-
-## 📱 Telas do Sistema
-
-1. **Rastreamento Público** (`/`) — Busca por código de rastreio
-2. **Resultado do Rastreamento** (`/rastreio/:code`) — Status, timeline e detalhes
-3. **Login** (`/login`) — Acesso à área interna
-4. **Dashboard** (`/app/dashboard`) — Métricas e visão geral
-5. **Lista de Entregas** (`/app/entregas`) — Tabela filtrada
-6. **Detalhes da Entrega** (`/app/entregas/:id`) — Informações completas + timeline
-7. **Scanner QR** (`/app/scanner`) — Leitura e atualização de status
-8. **Mapa da Frota** (`/app/frota`) — Localização dos caminhões
-9. **Gerenciamento de Usuários** (`/app/usuarios`) — CRUD de usuários
-10. **Permissões** (embutido no gerenciamento) — Visualização por perfil
 
 ---
 
@@ -154,8 +126,8 @@ src/
 
 - **Dark mode** na área interna — reduz fadiga visual para uso prolongado
 - **Light mode** na área pública — mais amigável para clientes
-- **Paleta roxa** (#7C3AED) — consistente com a identidade da logo
-- **Micro-animações** — staggered fade-in, hover effects, scan line
+- **Paleta roxa** (#7C3AED) — consistente com a identidade visual
+- **Micro-animações** — staggered fade-in, hover effects, scan line no scanner
 - **Responsivo** — funciona em desktop, tablet e mobile
 - **Mapas dark** (CartoDB Dark) — coerente com o tema do dashboard
 
@@ -163,19 +135,14 @@ src/
 
 ## 🔮 Evolução Futura
 
-Este protótipo foi projetado para evolução. Próximos passos sugeridos:
-
-1. **Backend real** — Node.js + Express + PostgreSQL
-2. **Autenticação JWT** — Tokens com refresh
-3. **WebSocket** — Atualizações em tempo real
-4. **GPS real** — Integração com dispositivos móveis
-5. **QR Scanner real** — Câmera do dispositivo
-6. **Notificações** — Push notifications e email
-7. **Relatórios** — Exportação PDF/Excel
-8. **PWA** — App instalável offline
+1. **Cloud Functions** — Para cálculos automatizados e disparos de emails.
+2. **Cloud Messaging (FCM)** — Notificações push em tempo real para os motoristas e clientes.
+3. **Offline Sync** — Habilitar o cache offline do Firestore para o scanner QR dos motoristas.
+4. **GPS Real** — Integração com o GPS de um app nativo para atualizar a coleção `locations` dinamicamente.
+5. **Relatórios Avançados** — Exportação das entregas em PDF/Excel.
 
 ---
 
 ## 📄 Licença
 
-Projeto desenvolvido para a **Locatrans** como protótipo funcional.
+Projeto desenvolvido para a **Locatrans** como protótipo funcional integrado com Firebase.

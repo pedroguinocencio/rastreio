@@ -1,10 +1,9 @@
 /**
  * Tracking Service - rastre.io
  * Serviço de rastreamento público de encomendas
- * Simula chamadas de API com dados mock
+ * Lógica de negócio — acesso a dados via repositórios Firestore
  */
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../../../shared/utils/firebase';
+import { deliveryRepo, statusHistoryRepo, locationRepo } from '../../../shared/repositories';
 import { TRACKING_CODE_REGEX } from '../../../shared/utils/constants';
 
 /**
@@ -33,39 +32,20 @@ export async function trackDelivery(code) {
     throw new Error(validation.message);
   }
 
-  // Busca encomenda no Firestore
-  const deliveriesRef = collection(db, 'deliveries');
-  const qDel = query(deliveriesRef, where('trackingCode', '==', validation.code));
-  const delSnap = await getDocs(qDel);
+  // Busca encomenda via repositório
+  const delivery = await deliveryRepo.getByTrackingCode(validation.code);
 
-  if (delSnap.empty) {
-    throw new Error('Código de rastreio não encontrado. Verifique o código e tente novamente.');
-  }
-
-  const deliveryDoc = delSnap.docs[0];
-  const delivery = { id: deliveryDoc.id, ...deliveryDoc.data() };
-
-  // Busca histórico de status do Firestore
-  const historyRef = collection(db, 'statusHistory');
-  const qHistory = query(historyRef, where('deliveryId', '==', delivery.id));
-  const historySnap = await getDocs(qHistory);
-  
-  let history = [];
-  historySnap.forEach(doc => {
-    history.push({ id: doc.id, ...doc.data() });
-  });
-  
-  // Ordena o histórico por data decrescente
+  // Busca histórico de status
+  const history = await statusHistoryRepo.getByDeliveryId(delivery.id);
   history.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  // Busca localização do caminhão (se houver)
+  // Busca localização do caminhão se houver placa associada
   let location = null;
   if (delivery.truckPlate) {
-    const locationsRef = collection(db, 'locations');
-    const qLoc = query(locationsRef, where('truckPlate', '==', delivery.truckPlate));
-    const locSnap = await getDocs(qLoc);
-    if (!locSnap.empty) {
-      location = { id: locSnap.docs[0].id, ...locSnap.docs[0].data() };
+    try {
+      location = await locationRepo.getByTruckPlate(delivery.truckPlate);
+    } catch {
+      // Ignora se não encontrar localização
     }
   }
 
