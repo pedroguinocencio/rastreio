@@ -25,6 +25,7 @@ import DeliveriesListPage from '../../modules/deliveries/pages/DeliveriesListPag
 import DeliveryDetailPage from '../../modules/deliveries/pages/DeliveryDetailPage';
 import FleetMapPage from '../../modules/locations/pages/FleetMapPage';
 import ScannerPage from '../../modules/scanner/pages/ScannerPage';
+import UsersListPage from '../../modules/users/pages/UsersListPage';
 
 /**
  * Componente para proteger rotas que requerem autenticação
@@ -108,6 +109,11 @@ export default function AppRouter() {
           <Route path="scanner" element={
             <ProtectedRoute permission="scanner.use">
               <ScannerPage />
+            </ProtectedRoute>
+          } />
+          <Route path="usuarios" element={
+            <ProtectedRoute permission="users.manage">
+              <UsersListPage />
             </ProtectedRoute>
           } />
         </Route>

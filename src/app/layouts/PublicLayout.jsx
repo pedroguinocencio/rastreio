@@ -34,7 +34,7 @@ export default function PublicLayout() {
 
       {/* Footer */}
       <footer className="public-footer">
-        <p>© 2025 rastre.io — Locatrans Logística</p>
+        <p>© 2026 rastre.io — Fatec Mogi das Cruzes</p>
       </footer>
     </div>
   );

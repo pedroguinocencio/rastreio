@@ -61,7 +61,7 @@
   z-index: 10;
 }
 .public-logo {
-  height: 36px;
+  height: 96px;
   width: auto;
 }
 .public-login-link {
@@ -126,7 +126,7 @@
 }
 
 .auth-logo {
-  height: 44px;
+  height: 100px;
   width: auto;
 }
 
@@ -169,7 +169,7 @@
   border-bottom: 1px solid var(--surface-border);
 }
 .sidebar-logo {
-  height: 28px;
+  height: 72px;
   width: auto;
 }
 .sidebar-close-btn {
@@ -311,7 +311,7 @@
 }
 
 .dashboard-header-logo-img {
-  height: 24px;
+  height: 60px;
   width: auto;
 }
 .dashboard-header-user {
@@ -364,7 +364,7 @@
     padding: var(--space-3) var(--space-4);
   }
   .public-logo {
-    height: 28px;
+    height: 72px;
   }
   .auth-container {
     padding: var(--space-4);

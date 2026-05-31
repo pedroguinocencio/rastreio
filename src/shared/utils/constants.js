@@ -63,7 +63,8 @@ export const USER_ROLES = {
       'deliveries.delete',
       'fleet.view',
       'scanner.use',
-      'reports.view'
+      'reports.view',
+      'users.manage'
     ]
   },
   employee: {
@@ -101,7 +102,8 @@ export const PERMISSION_LABELS = {
   'deliveries.delete': 'Excluir Entregas',
   'fleet.view': 'Visualizar Frota',
   'scanner.use': 'Usar Scanner QR',
-  'reports.view': 'Visualizar Relatórios'
+  'reports.view': 'Visualizar Relatórios',
+  'users.manage': 'Gerenciar Usuários'
 };
 
 // Validação de código de rastreio
@@ -115,4 +117,5 @@ export const SIDEBAR_ITEMS = [
   { path: '/app/entregas', label: 'Entregas', icon: 'Package', permission: 'deliveries.view' },
   { path: '/app/frota', label: 'Frota', icon: 'Map', permission: 'fleet.view' },
   { path: '/app/scanner', label: 'Scanner QR', icon: 'ScanLine', permission: 'scanner.use' },
+  { path: '/app/usuarios', label: 'Usuários', icon: 'Users', permission: 'users.manage' },
 ];
